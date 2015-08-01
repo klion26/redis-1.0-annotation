@@ -131,7 +131,10 @@ size_t sdsavail(sds s) {
 void sdsupdatelen(sds s) {
     /* get the start position of the struct */
     struct sdshdr *sh = (void*) (s-(sizeof(struct sdshdr)));
-    /* get the current length of s */
+    /* get the current length of s until the first '\0'
+	 * if s == "abc\0\0\0"
+	 * after sdsupdatelen(s), s will be "abc"
+	 **/
     int reallen = strlen(s);
     /* update the free space and length */
     sh->free += (sh->len-reallen);
